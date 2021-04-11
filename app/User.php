@@ -38,7 +38,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
+    public function socialites()
+    {
+        return $this->belongsTo('App\Models\Socialites','email','email');
+    }
 
     public function roles()
     {

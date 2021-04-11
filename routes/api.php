@@ -14,9 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+
 
 
 Route::namespace('Api')->middleware(['api'])->prefix('user')->group(function ($router) {
@@ -24,12 +26,16 @@ Route::namespace('Api')->middleware(['api'])->prefix('user')->group(function ($r
     // Route::post('verfication_code','AuthController@verfication_code');
     Route::post('register','AuthController@register');
     Route::post('login', 'AuthController@login');
+    Route::delete('logout','AuthController@logout');
+    Route::get('me', 'AuthController@me');
+
+
+    // Route::get('auth/{ocialite}', 'AuthController@redirectToGoogle')->name('login.ocialite');
+    // Route::get('auth/{ocialite}/callback', 'AuthController@handleGoogleCallback')->name('login.ocialite.callback');
 
 });
 
-// Route::namespace('Api')->middleware(['api'])->group(function ($router){
-//     Route::resource('product','ProductController')->except(['edit', 'create',' destroy']);
-// });
+
 
 Route::namespace('Api\Frontend')->middleware(['api'])->prefix('frontend')->group(function ($router){
      Route::get('product/home/{page}','ProductController@home')->name('product.home');
@@ -56,20 +62,24 @@ Route::namespace('Api\Frontend')->middleware(['api'])->prefix('frontend')->group
     Route::delete('cart/deleted/{id}','CartController@deletedCart')->name('cart.deleted');
     Route::delete('carts/deleted/all','CartController@deltedCartall')->name('cart.deleted.all');
     //order
+    Route::post('order/product','OrderController@order')->name('order.product')->middleware(['token.valid']);
+
 
 
 
 });
 
 
+Route::namespace('Api')->middleware(['api'])->group(function ($router) {
+    //   Route::get('auth/{ocialite}', 'AuthController@redirectToGoogle')->name('login.ocialite');
+    // Route::get('auth/{ocialite}/callback', 'AuthController@handleGoogleCallback')->name('login.ocialite.callback');
 
 
-Route::group([
-    'middleware' => 'auth:api'
-  ], function() {
-      Route::post('order/product','Api\Frontend\OrderController@order')->name('order.product')->middleware('token.valid');
-      Route::delete('user/logout','Api\AuthController@logout');
-      Route::get('user/me', 'Api\AuthController@me');
+Route::get('auth/{ocialite}/url', 'OcialiteController@loginUrl');
+Route::get('auth/{ocialite}/callback', 'OcialiteController@loginCallback');
+
+//    Route::get('auth/{ocialite}', 'AuthController@redirectToGoogle')->name('login.ocialite');
+//     Route::get('auth/{ocialite}/callback', 'AuthController@handleGoogleCallback')->name('login.ocialite.callback');
 
 
-  });
+   });

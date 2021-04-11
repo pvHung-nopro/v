@@ -9,7 +9,7 @@
     public function save(Request $request)
     {
 
-       $user = Auth::user() ;
+       $user =    Auth::guard('api')->user();
 
         return Customer::updateOrCreate([
             'phone'=> $request->phone

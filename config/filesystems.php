@@ -63,6 +63,13 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
         ],
+        // 'fourkites-ftp' => [
+        //     'driver' => 'ftp',
+        //     'host' => 'ftp.site.com',
+        //     'username' => 'my-username',
+        //     'password' => 'my-password',
+    
+        // ],
 
     ],
 

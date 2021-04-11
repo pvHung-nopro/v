@@ -16,17 +16,16 @@ class checkToken
      */
     public function handle($request, Closure $next)
     {
-        // $user = Auth::check();
-         $user =  $request->user()->id;
-     if(!$user){
-          return response()->json([
-            'message' => 'Unauthorize',
-            'status'  => false,
-            'code'    => 401,
-    ]);
-     }
+        if (!Auth::guard('api')->check()) {
+            // $user = Auth::guard('api')->user();
 
+         return    response()->json([
+               'status'=>false,
+               'errors'=>'vui long login'
+            ]);
+        }
 
-        return $next($request);
-                }
+         return $next($request);
+
+    }
 }
